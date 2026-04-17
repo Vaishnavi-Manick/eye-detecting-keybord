@@ -1,4 +1,4 @@
-# eye-detecting-keybord
+# eye-detecting-keyboard
 
 A small project that detects eye movements and blinks from a webcam and translates them into keyboard actions. This repository provides code and configuration to control a virtual keyboard or send keystrokes using eye gestures.
 
@@ -16,82 +16,85 @@ A small project that detects eye movements and blinks from a webcam and translat
 
 ## Features
 
-- Real-time eye detection from webcam video
-- Recognizes blinks and/or gaze direction to trigger keyboard events
-- Lightweight setup using OpenCV and a gaze/landmark library (MediaPipe or dlib)
-- Example scripts to test and map eye gestures to keys
+- Real-time eye detection from webcam video using `dlib` and `OpenCV`.
+- Recognizes blinks and gaze direction to trigger virtual keyboard events.
+- Virtual QWERTY keyboard displayed on screen.
+- Sound feedback for key presses (Windows-specific).
+- Dynamic download of `shape_predictor_68_face_landmarks.dat` if not present.
 
 ## Requirements
 
 - Python 3.8+
 - A webcam
-- Recommended libraries:
-  - opencv-python
-  - mediapipe or dlib (choose one based on project code)
-  - numpy
-  - pyautogui (for sending keyboard events)
-  - scikit-learn or tensorflow (optional, if using ML models)
+- Libraries:
+  - `opencv-python`
+  - `dlib`
+  - `numpy`
+  - `winsound` (Windows only, for sound feedback)
 
-If this repository contains a `requirements.txt`, install with:
+Install dependencies using `requirements.txt`:
 
-```
-python -m pip install -r requirements.txt
-```
-
-Otherwise install the common dependencies manually:
-
-```
-python -m pip install opencv-python mediapipe numpy pyautogui
+```bash
+pip install -r requirements.txt
 ```
 
 ## Installation
 
 1. Clone the repository:
 
-```
+```bash
 git clone https://github.com/Vaishnavi-Manick/eye-detecting-keybord.git
 cd eye-detecting-keybord
 ```
 
 2. (Optional) Create and activate a virtual environment:
 
-```
+```bash
 python -m venv venv
 # Windows
-venv\Scripts\activate
+virtual_env\Scripts\activate
 # macOS / Linux
 source venv/bin/activate
 ```
 
-3. Install dependencies (see Requirements above).
+3. Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
 
 ## Usage
 
 1. Connect a webcam.
-2. Open and inspect the main script (for example `main.py`, `app.py` or `eye_keyboard.py`) to confirm the entry point.
-3. Run the script:
+2. Run the main script:
 
+```bash
+python eye
 ```
-python main.py
-```
 
-4. Follow on-screen instructions to calibrate the eye detector (if provided). Adjust thresholds in the configuration file or inside the script.
-
-Note: If the repository uses a different entry filename, replace `main.py` above with the appropriate script name.
+3. The script will automatically download the `shape_predictor_68_face_landmarks.dat` file if it's not found in the current directory.
+4. A virtual keyboard and a text board will appear. Look left or right to navigate through the keys, and blink to select a key.
 
 ## How it works
 
-The project captures frames from the webcam, detects facial landmarks (especially around the eyes), and computes metrics such as eye aspect ratio (EAR) or gaze direction. When a blink or a specific gaze pattern is detected, the script sends a corresponding keyboard event to the OS (for example, a spacebar press for a blink).
+The project captures frames from the webcam using `OpenCV`. It then uses `dlib`'s face detector and shape predictor to identify facial landmarks, specifically around the eyes. The script calculates the Eye Aspect Ratio (EAR) to detect blinks and analyzes the distribution of white pixels in the eye region to determine gaze direction. When a blink or a specific gaze pattern (looking left or right) is detected, it triggers a corresponding action on the virtual keyboard, adding the selected character to the text board.
 
 ## Configuration
 
-- Thresholds and timings (e.g. EAR threshold, blink duration) are typically set near the top of the main script or in a separate config file. Tune these values per-user and per-camera.
-- If you add a calibration routine, document how to run it and where the calibration output is stored.
+The following parameters can be adjusted within the `eye` script:
+
+- **Blink Detection Threshold**: The `blink_ratio` threshold is set to `5.7`. A value above this indicates a blink.
+- **Gaze Detection Thresholds**: 
+  - Looking right: `gaze_ratio <= 0.8`
+  - Looking left: `gaze_ratio > 1.8`
+- **Gaze Delay Counter**: `gaze_delay_counter` is set to `10` to prevent rapid key selections due to continuous gaze.
+
+These values can be modified in the `eye` script to fine-tune performance based on lighting conditions, webcam quality, and individual eye characteristics.
 
 ## Development
 
 - Follow standard Python project layout.
-- Add unit tests for utility functions (e.g. EAR computation, blink detection logic).
+- Add unit tests for utility functions (e.g., EAR computation, blink detection logic).
 - Keep model and large binary files out of the repository — use Git LFS if necessary.
 
 ## Contributing
@@ -100,8 +103,4 @@ Contributions are welcome. Please open an issue to discuss major changes before 
 
 ## License
 
-Specify the license you want to use (for example MIT). If you haven't chosen a license, add one (e.g. `LICENSE` file) before publishing.
-
----
-
-If you want, I can push this README.md update to the repository now, or customize sections (usage, entry script name, dependencies) if you tell me the exact main script filename and tech choices used in the project.
+This project is licensed under the MIT License - see the LICENSE file for details (if available).
