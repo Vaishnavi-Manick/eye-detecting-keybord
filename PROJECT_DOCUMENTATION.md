@@ -1,10 +1,6 @@
 # Eye-Controlled Virtual Keyboard for Physically Abled User Interaction
 
-**Authors:** 
-- **Aadheeshwar A** (aadheeprasanna@gmail.com)
-- **Swathika G** (gswathika43@gmail.com)
-- **Vineesh M** (vineeshxd3@gmail.com)
-*Department of AIDS, Saveetha Engineering College, Chennai, India*
+**Author:** **Vaishnavi M**
 
 ---
 
